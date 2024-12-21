@@ -1,3 +1,6 @@
+// Set up an Express.js server with various middleware and route handlers.
+
+// Import dependencies
 var express = require('express');
 var path = require('path');
 var debug = require('debug')('appDebug');
@@ -16,6 +19,10 @@ app.set('port', process.env.PORT || 1337);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// Serve favicon
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.get('/favicon.ico', (req, res) => res.status(204)); // Ignore requests
+
 // Set up middleware
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -24,7 +31,9 @@ app.use(cookieParser());
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', routes);
+
+// Set up routes
+app.use('/', routes); // root
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -53,7 +62,7 @@ app.use(function (err, req, res, next) {
     });
 });
 
-// Start server
+// Start server and listen on the specified port
 var server = app.listen(app.get('port'), function () {
     debug('Server listening on port ' + server.address().port);
 });

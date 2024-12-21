@@ -33,6 +33,7 @@
     <Content Include="libman.json" />
     <Content Include="public\lib\p5.js" />
     <Content Include="public\scripts\Food.js" />
+    <Content Include="public\scripts\Score.js" />
     <Content Include="public\scripts\Snake.js" />
     <Content Include="public\scripts\SnakeGame.js" />
     <Content Include="public\stylesheets\main.css" />

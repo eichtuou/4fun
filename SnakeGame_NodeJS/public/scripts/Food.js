@@ -1,19 +1,17 @@
 class Food {
-
     constructor() {
-        this.xMax = floor(width / pixelSize);
-        this.yMax = floor(height / pixelSize);
-        this.x = floor(random() * this.xMax) * pixelSize;
-        this.y = floor(random() * this.yMax) * pixelSize;
+        this.x = floor(random(cols));
+        this.y = floor(random(rows));
     }
 
-    show() {
+    render() {
         fill(255, 0, 0);
-        rect(this.x, this.y, pixelSize, pixelSize);
+        rect(this.x, this.y, 1, 1);
     }
 
     newFood() {
-        this.x = floor(random() * this.xMax) * pixelSize;
-        this.y = floor(random() * this.yMax) * pixelSize;
+        this.x = floor(random(cols));
+        this.y = floor(random(rows));
     }
 }
+

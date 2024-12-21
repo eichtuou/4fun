@@ -1,51 +1,70 @@
 class Snake {
     constructor() {
-        this.x = 0;
-        this.y = 0;
-        this.xDirection = 1;
-        this.yDirection = 0;
-        this.size = 0;
         this.body = [];
+        this.body[0] = createVector(0, 0);
+        this.xDir = 1;
+        this.yDir = 0;
     }
 
-    direction(x, y) {
-        this.xDirection = x;
-        this.yDirection = y;
+    getHead() {
+        let head = this.body[this.body.length - 1].copy();
+        return head;
     }
 
-    show() {
+    setDir(x, y) {
+        this.xDir = x;
+        this.yDir = y;
+    }
+
+    render() {
         fill(255);
-        for (var i = 0; i < this.body.length; i++) {
-            rect(this.body[i].x, this.body[i].y, pixelSize, pixelSize)
+        for (let i = 0; i < this.body.length; i++) {
+            rect(this.body[i].x, this.body[i].y, 1, 1);
         }
-        rect(this.x, this.y, pixelSize, pixelSize);
     }
 
     update() {
-        for (var i = 0; i < this.body.length - 1; i++) {
-            this.body[i] = this.body[i + 1];
-        }
+        let head = this.getHead();
+        this.body.shift();
+        head.x += this.xDir;
+        head.y += this.yDir;
+        this.body.push(head);
+    }
 
-        if (this.size >= 1) {
-            this.body[this.size - 1] = createVector(this.x, this.y);
-        }
-
-        this.x = this.x + this.xDirection * pixelSize;
-        this.y = this.y + this.yDirection * pixelSize;
-        this.x = constrain(this.x, 0, width - pixelSize);
-        this.y = constrain(this.y, 0, height - pixelSize);
+    grow(head) {
+        this.body.push(head);
     }
 
     ateFood(food) {
-        var distance = dist(this.x, this.y, food.x, food.y);
+        let head = this.getHead()
+        let foodDist = dist(head.x, head.y, food.x, food.y);
 
-        if (distance < 1) {
-            this.size++;
+        if (foodDist < 1) {
+            this.grow(head);
             return true;
+
         } else {
             return false;
         }
     }
 
+    isItGameOver() {
+        let head = this.getHead();
+
+        // hit wall
+        if (head.x < 0 || head.y < 0 || head.x > cols - 1 || head.y > rows - 1) {
+            return true;
+        }
+
+        // hit self - only works if body.length > 2
+        if (this.body.length > 1) {
+            for (let i = 0; i < this.body.length - 1; i++) {
+                if (this.body[i].x == head.x && this.body[i].y == head.y) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 
